@@ -368,6 +368,7 @@ bin-int
 bin
 .vs
 premake5.exe
+GenerateProject.bat
 
 Architect.sln
 
