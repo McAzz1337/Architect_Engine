@@ -1,0 +1,4 @@
+tint
+tex
+alpha
+uvOffset

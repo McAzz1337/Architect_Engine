@@ -1,0 +1,5 @@
+Dark Gray		#272727FF
+Middle Gray 	#48494DFF
+Light Gray 	#75777CFF
+Blue 			#75777CFF
+Purple 		#6851A3FF
