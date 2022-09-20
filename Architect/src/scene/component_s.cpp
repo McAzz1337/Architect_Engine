@@ -38,6 +38,9 @@ namespace archt {
 		transform = glm::scale(transform, s);
 	}
 
+	glm::vec3 Transform_s::getPosition() const {
+		return glm::vec3(transform[3]);
+	}
 
 
 

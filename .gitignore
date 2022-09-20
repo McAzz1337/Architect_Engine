@@ -370,7 +370,7 @@ bin
 premake5.exe
 GenerateProject.bat
 
-Architect.sln
+Architect_Engine.sln
 
 Architect/Architect.vcxproj
 Architect/Architect.vcxproj.filters

@@ -4,8 +4,12 @@
 
 #include "platform/windows/window.h"
 
+#include "bezierrecurve/bezierrecurve.h"
+#include "bezierrecurve/curve.h"
+
 #include "chronos/deltatime.h"
 #include "chronos/delta.h"
+
 
 #include "filesystem/filemanager.h"
 

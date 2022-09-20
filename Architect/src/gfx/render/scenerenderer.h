@@ -3,7 +3,7 @@
 #include "../../scene/scene.h"
 #include "../../scene/entity_s.h"
 
-#include <entt.hpp>
+#include <entt/entt.hpp>
 
 #include "../../entity/component/camera_new.h"
 #include "../opengl/glvertexarray.h"
