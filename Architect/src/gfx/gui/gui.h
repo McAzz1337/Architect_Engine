@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "guiwindow_s.h"
+#include "guiwindow.h"
 #include "../opengl/glwindow.h"
 
 #include <imgui.h>
@@ -17,16 +17,16 @@
 
 namespace archt {
 
-	class Gui_s {
+	class Gui {
 
-		static Gui_s* instance;
+		static Gui* instance;
 
 
-		GuiWindow_s* styleWindow = nullptr;
-		GuiWindow_s* focusedWindow = nullptr;
+		GuiWindow* styleWindow = nullptr;
+		GuiWindow* focusedWindow = nullptr;
 
-		std::vector<GuiWindow_s*> constantWindows;
-		std::vector<GuiWindow_s*> perFrameWindows;
+		std::vector<GuiWindow*> constantWindows;
+		std::vector<GuiWindow*> perFrameWindows;
 
 		static const std::string styleFile;
 
@@ -34,12 +34,12 @@ namespace archt {
 
 		bool docked = true;
 
-		Gui_s(glm::ivec2 windowSize);
-		~Gui_s();
+		Gui(glm::ivec2 windowSize);
+		~Gui();
 	public:
 
 		static void init(GLWindow* window);
-		static Gui_s* getInstance();
+		static Gui* getInstance();
 		static void setStyle();
 		static void terminate();
 
@@ -47,21 +47,21 @@ namespace archt {
 
 		
 		// closable windows------------------------------------------------
-		template <typename = std::function<void(const char*, bool*, GuiWindow_s*)>>
-		GuiWindow_s* addGuiWindow_void(const char* name, std::function<void(const char*, bool*, GuiWindow_s*)> f, CloseCallback callback = nullptr) {
+		template <typename = std::function<void(const char*, bool*, GuiWindow*)>>
+		GuiWindow* addGuiWindow_void(const char* name, std::function<void(const char*, bool*, GuiWindow*)> f, CloseCallback callback = nullptr) {
 
-			constantWindows.push_back(new GuiWindow_s(name, f, callback));
+			constantWindows.push_back(new GuiWindow(name, f, callback));
 			return constantWindows[constantWindows.size() - 1];
 		}
 
 		template <typename F, typename = CloseCallback, typename... Args>
-		GuiWindow_s* addGuiWindow_args(const char* name, F&& f, CloseCallback callback,  Args&&... args) {
+		GuiWindow* addGuiWindow_args(const char* name, F&& f, CloseCallback callback,  Args&&... args) {
 
 			constantWindows.push_back(createGuiWindow_args(name, f, callback, std::forward<Args>(args)...));
 			return constantWindows[constantWindows.size() - 1];
 		}
 
-		void removeWindow(GuiWindow_s* window);
+		void removeWindow(GuiWindow* window);
 
 		void setDockingMode(bool mode);
 
@@ -70,9 +70,9 @@ namespace archt {
 
 		void createStyleWindow();
 
-		inline GuiWindow_s* getFocusedWindow() const { return focusedWindow; }
+		inline GuiWindow* getFocusedWindow() const { return focusedWindow; }
 
-		void setFocusedWindow(GuiWindow_s* window);
+		void setFocusedWindow(GuiWindow* window);
 
 	private:
 		void renderDocked();

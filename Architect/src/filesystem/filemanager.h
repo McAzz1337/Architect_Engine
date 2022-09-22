@@ -9,7 +9,7 @@
 
 #include "../ptr.h"
 
-#include "../gfx/gui/guiwindow_s.h"
+#include "../gfx/gui/guiwindow.h"
 
 
 namespace archt {
@@ -27,7 +27,7 @@ namespace archt {
 		std::unordered_map<std::string, ptr<GLTexture>> textureFiles;
 		std::unordered_map<std::string, ptr<AudioBuffer>> audioFiles;
 
-		GuiWindow_s* guiWindow = nullptr;
+		GuiWindow* guiWindow = nullptr;
 
 		Filemanager();
 		~Filemanager();

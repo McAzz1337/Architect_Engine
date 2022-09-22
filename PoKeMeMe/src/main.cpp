@@ -15,7 +15,7 @@ int main() {
 #endif
 
 	GLWindow* window = GLRenderAPI::init();
-	Gui_s::init(window);
+	Gui::init(window);
 	GLRenderAPI::createGuiInfoWindow();
 	system_info::createSysteminfoWindow();
 
@@ -99,7 +99,7 @@ int main() {
 
 	{
 		
-		auto lambda = [&entity, cam](const char* name, bool* open, GuiWindow_s* handle) {
+		auto lambda = [&entity, cam](const char* name, bool* open, GuiWindow* handle) {
 
 			ImGui::Begin(name, open);
 
@@ -159,7 +159,7 @@ int main() {
 			ImGui::End();
 
 		};
-		Gui_s::getInstance()->addGuiWindow_void("Entity", lambda);
+		Gui::getInstance()->addGuiWindow_void("Entity", lambda);
 	}
 
 
@@ -182,7 +182,7 @@ int main() {
 	{ 
 		renderTimer += deltaTime;
 		auto lambda = [&renderTimer, &targetFps, &targetDelta, &deltaTime, &frames, &highestFps]
-											(const char* name, bool* open, GuiWindow_s* handle) {
+											(const char* name, bool* open, GuiWindow* handle) {
 			ImGui::Begin(name, open);
 			std::string fileName = "";
 			extractFileName(__FILE__, fileName, '\\');
@@ -200,7 +200,7 @@ int main() {
 
 			ImGui::End();
 		};
-		Gui_s::getInstance()->addGuiWindow_void("Frames", lambda);
+		Gui::getInstance()->addGuiWindow_void("Frames", lambda);
 	}
 
 #ifdef SPLASH_SCREEN
@@ -244,10 +244,10 @@ int main() {
 #pragma region CAMERA_CONTROLS
 		
 		ptr<Camera_new> controlledCamera = nullptr;
-		if (fb.getGuiWindow() == Gui_s::getInstance()->getFocusedWindow()) {
+		if (fb.getGuiWindow() == Gui::getInstance()->getFocusedWindow()) {
 			controlledCamera = cam;
 		}
-		else if (fb1.getGuiWindow() == Gui_s::getInstance()->getFocusedWindow()) {
+		else if (fb1.getGuiWindow() == Gui::getInstance()->getFocusedWindow()) {
 			controlledCamera = cam1;
 		}
 
@@ -328,7 +328,7 @@ int main() {
 
 
 
-			Gui_s::getInstance()->render();
+			Gui::getInstance()->render();
 
 
 			window->swapBuffer();
@@ -346,7 +346,7 @@ int main() {
 
 
 	delete window;
-	Gui_s::terminate();
+	Gui::terminate();
 
 	SceneRenderer::deleteInstance();
 	Input::terminate();

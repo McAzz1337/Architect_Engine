@@ -21,8 +21,8 @@
 #include "gfx/render/renderer2d.h"
 #include "gfx/render/scenerenderer.h"
 
-#include "gfx/gui/gui_s.h"
-#include "gfx/gui/guiwindow_s.h"
+#include "gfx/gui/gui.h"
+#include "gfx/gui/guiwindow.h"
 
 #include "input/input.h"
 

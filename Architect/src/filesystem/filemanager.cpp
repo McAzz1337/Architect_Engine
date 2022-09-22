@@ -2,7 +2,7 @@
 
 #include "../fileio.h"
 
-#include "../gfx/gui/gui_s.h"
+#include "../gfx/gui/gui.h"
 
 namespace archt {
 	
@@ -43,7 +43,7 @@ namespace archt {
 			return;
 		}
 
-		auto lambda = [this](const char* name, bool* open, GuiWindow_s* window) {
+		auto lambda = [this](const char* name, bool* open, GuiWindow* window) {
 
 			ImGui::Begin(name, open);
 
@@ -101,7 +101,7 @@ namespace archt {
 
 		};
 
-		guiWindow = Gui_s::getInstance()->addGuiWindow_void("Filemanager", lambda);
+		guiWindow = Gui::getInstance()->addGuiWindow_void("Filemanager", lambda);
 	}
 	
 	Filemanager& Filemanager::getInstance() {

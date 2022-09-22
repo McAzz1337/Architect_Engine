@@ -5,7 +5,7 @@
 
 #include "../../scene/component_s.h"
 
-#include "../gui/gui_s.h"
+#include "../gui/gui.h"
 
 namespace archt {
 

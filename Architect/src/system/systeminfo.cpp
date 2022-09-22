@@ -2,7 +2,7 @@
 
 
 
-#include "../gfx/gui/gui_s.h"
+#include "../gfx/gui/gui.h"
 
 #include <algorithm>
 
@@ -1499,7 +1499,7 @@ namespace archt {
 			return ret;
 		}
 
-		void renderFunc(const char* name, bool* open, GuiWindow_s* handle) {
+		void renderFunc(const char* name, bool* open, GuiWindow* handle) {
 
 			ImGui::Begin("Cpu");
 			ImGui::Text("Name :\t\t%s", convert(id.CPU.Name).c_str());
@@ -1552,7 +1552,7 @@ namespace archt {
 			getMemoryMetrics(memStat);
 			CommandLine::Create(id);
 
-			Gui_s::getInstance()->addGuiWindow_void("SystemInfo", renderFunc);
+			Gui::getInstance()->addGuiWindow_void("SystemInfo", renderFunc);
 	
 		}
 

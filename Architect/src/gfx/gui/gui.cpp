@@ -1,4 +1,4 @@
-#include "gui_s.h"
+#include "gui.h"
 
 #include "../../filesystem/filemanager.h"
 
@@ -70,12 +70,12 @@ namespace archt {
 
 
 
-	Gui_s* Gui_s::instance = nullptr;
+	Gui* Gui::instance = nullptr;
 
-	const std::string Gui_s::styleFile = "src/assets/styles/style.txt";
+	const std::string Gui::styleFile = "src/assets/styles/style.txt";
 
 
-	Gui_s::Gui_s(glm::ivec2 windowSize) {
+	Gui::Gui(glm::ivec2 windowSize) {
 		ImGuiIO& io = ImGui::GetIO();
 		(void) io;
 		io.DisplaySize.x = windowSize.x;
@@ -91,18 +91,18 @@ namespace archt {
 		//createStyleWindow();
 	}
 
-	Gui_s::~Gui_s() {
-		for (GuiWindow_s* w : constantWindows)
+	Gui::~Gui() {
+		for (GuiWindow* w : constantWindows)
 			delete w;
 
-		for (GuiWindow_s* w : perFrameWindows)
+		for (GuiWindow* w : perFrameWindows)
 			delete w;
 
 		if (styleWindow)
 			delete styleWindow;
 	}
 
-	void Gui_s::init(GLWindow* window) {
+	void Gui::init(GLWindow* window) {
 
 		if (instance)
 			return;
@@ -119,16 +119,16 @@ namespace archt {
 		ImGui_ImplGlfw_InitForOpenGL(window->getHandle(), true);
 		ImGui::StyleColorsDark();
 		glm::ivec2 windowSize = window->getSize();
-		instance = new Gui_s(windowSize);
+		instance = new Gui(windowSize);
 
 		setStyle();
 	}
 
-	Gui_s* Gui_s::getInstance() {
+	Gui* Gui::getInstance() {
 		return instance;
 	}
 
-	void Gui_s::setStyle() {
+	void Gui::setStyle() {
 
 
 		ImGuiStyle& style = ImGui::GetStyle();
@@ -160,7 +160,7 @@ namespace archt {
 
 	}
 
-	void Gui_s::terminate() {
+	void Gui::terminate() {
 
 		if (instance) {
 			delete instance;
@@ -171,7 +171,7 @@ namespace archt {
 		ImGui_ImplOpenGL3_Shutdown();
 	}
 
-	void Gui_s::render() {
+	void Gui::render() {
 
 		if (docked)
 			renderDocked();
@@ -180,7 +180,7 @@ namespace archt {
 	}
 
 
-	void Gui_s::removeWindow(GuiWindow_s* window) {
+	void Gui::removeWindow(GuiWindow* window) {
 		for (int i = 0; i < constantWindows.size(); i++) {
 
 			if (constantWindows[i] == window) {
@@ -196,19 +196,19 @@ namespace archt {
 		}
 	}
 
-	void Gui_s::setDockingMode(bool mode) {
+	void Gui::setDockingMode(bool mode) {
 		docked = mode;
 	}
 
-	bool Gui_s::hasWindow(const char* name) const {
+	bool Gui::hasWindow(const char* name) const {
 		return false;
 	}
 
-	void Gui_s::createStyleWindow() {
+	void Gui::createStyleWindow() {
 
 		
 
-		auto lambda = [this](const char* name, bool* open, GuiWindow_s* handle) {
+		auto lambda = [this](const char* name, bool* open, GuiWindow* handle) {
 
 
 
@@ -228,7 +228,7 @@ namespace archt {
 				if (ImGui::Button(symbols[i].c_str(), buttonSize)) {
 					
 
-					auto colorPicker = [this](const char* name, bool* open, GuiWindow_s* handle, int index) {
+					auto colorPicker = [this](const char* name, bool* open, GuiWindow* handle, int index) {
 
 						if (ImGui::Begin(symbols[index].c_str(), open)) {
 
@@ -284,12 +284,12 @@ namespace archt {
 		}
 	}
 
-	void Gui_s::setFocusedWindow(GuiWindow_s* window) {
+	void Gui::setFocusedWindow(GuiWindow* window) {
 
 		focusedWindow = window;
 	}
 
-	void Gui_s::renderDocked() {
+	void Gui::renderDocked() {
 
 
 		ImGuiIO& io = ImGui::GetIO();
@@ -397,7 +397,7 @@ namespace archt {
 			//ImGui::ShowDemoWindow();
 
 
-			for (GuiWindow_s* w : perFrameWindows) {
+			for (GuiWindow* w : perFrameWindows) {
 				(*w)();
 			}
 			perFrameWindows.erase(perFrameWindows.begin(), perFrameWindows.end());
@@ -419,7 +419,7 @@ namespace archt {
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	}
 
-	void Gui_s::renderUndocked() {
+	void Gui::renderUndocked() {
 
 		ImGuiIO& io = ImGui::GetIO();
 		(void) io;
@@ -428,10 +428,10 @@ namespace archt {
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
-		for (GuiWindow_s* w : constantWindows)
+		for (GuiWindow* w : constantWindows)
 			(*w)();
 
-		for (GuiWindow_s* w : perFrameWindows) {
+		for (GuiWindow* w : perFrameWindows) {
 			(*w)();
 		}
 		perFrameWindows.erase(perFrameWindows.begin(), perFrameWindows.end());
