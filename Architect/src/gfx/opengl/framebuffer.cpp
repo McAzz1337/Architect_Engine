@@ -51,10 +51,10 @@ namespace archt {
 		vbo.setVerteces(verteces, vSize);
 		ibo.setIndeces(indeces, iSize);
 
-		auto lambda = [this](bool* open, GuiWindow_s* handle) {
+		auto lambda = [this](const char* name, bool* open, GuiWindow_s* handle) {
 
 
-			std::string windowName = "Framebuffer " + std::to_string(id);
+			std::string windowName = name + std::to_string(id);
 			ImGui::Begin(windowName.c_str());
 
 			if (ImGui::IsWindowFocused()) {
@@ -86,7 +86,7 @@ namespace archt {
 
 
 		};
-		guiWindow = Gui_s::getInstance()->addGuiWindow_void(lambda);
+		guiWindow = Gui_s::getInstance()->addGuiWindow_void("Framebuffer", lambda);
 	}
 
 	Framebuffer::~Framebuffer() {

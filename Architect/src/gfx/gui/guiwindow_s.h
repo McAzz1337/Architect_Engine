@@ -9,19 +9,22 @@ namespace archt {
 	class GuiWindow_s {
 	
 	protected:
+
+		const char* name = nullptr;
 		bool open = true;
 		CloseCallback callback;
-		std::function<void(bool*, GuiWindow_s*)> func;
+		std::function<void(const char*, bool*, GuiWindow_s*)> func;
 
 	public:
 		GuiWindow_s() = default;
 		GuiWindow_s(CloseCallback callback);
-		GuiWindow_s(std::function<void(bool*, GuiWindow_s*)> func, CloseCallback callback);
+		GuiWindow_s(const char* name, std::function<void(const char*, bool*, GuiWindow_s*)> func, CloseCallback callback);
 		 virtual ~GuiWindow_s();
 
 		operator bool();
 
 		virtual void operator()();
+
 
 	};
 
@@ -31,17 +34,17 @@ namespace archt {
 		static_assert(!(std::is_rvalue_reference_v<Args> && ...));
 
 		T function;
-		std::tuple<bool*, GuiWindow_s*, Args...> args;
+		std::tuple<const char*, bool*, GuiWindow_s*, Args...> args;
 
 	public:
 		template<typename Tw,
 				typename ...Argsw,
 				typename = std::enable_if_t<(std::is_convertible_v<Argsw&&, Args> && ...) > >
 
-		GuiWindow_W(Tw&& func, CloseCallback callback, Argsw&&... arguments)
-			: GuiWindow_s(callback),
+		GuiWindow_W(const char* name, Tw&& func, CloseCallback callback, Argsw&&... arguments)
+			: GuiWindow_s(name, nullptr, callback),
 				function(std::forward<Tw>(func)),
-				args{ &open, this, std::forward<Argsw>(arguments)... } {
+				args{ name, &open, this, std::forward<Argsw>(arguments)... } {
 		}
 
 		~GuiWindow_W() {
@@ -55,9 +58,9 @@ namespace archt {
 	};
 
 	template<typename T, typename ...Args>
-	GuiWindow_s* createGuiWindow_args(T&& func, CloseCallback callback, Args&&... args) {
+	GuiWindow_s* createGuiWindow_args(const char* name, T&& func, CloseCallback callback, Args&&... args) {
 		return (GuiWindow_s*) new GuiWindow_W<std::decay_t<T>,  std::remove_cv_t<std::remove_reference_t<Args>>...>
-			(std::forward <T>(func), callback, std::forward<Args>(args)...);
+			(name, std::forward <T>(func), callback, std::forward<Args>(args)...);
 	}
 
 }

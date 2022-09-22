@@ -43,9 +43,9 @@ namespace archt {
 			return;
 		}
 
-		auto lambda = [this](bool* open, GuiWindow_s* window) {
+		auto lambda = [this](const char* name, bool* open, GuiWindow_s* window) {
 
-			ImGui::Begin("Filemanager", open);
+			ImGui::Begin(name, open);
 
 			ImGui::BeginTabBar("Tabs");
 
@@ -101,7 +101,7 @@ namespace archt {
 
 		};
 
-		guiWindow = Gui_s::getInstance()->addGuiWindow_void(lambda);
+		guiWindow = Gui_s::getInstance()->addGuiWindow_void("Filemanager", lambda);
 	}
 	
 	Filemanager& Filemanager::getInstance() {

@@ -63,11 +63,11 @@ namespace archt {
 		}
 
 
-		auto lambda = [this](bool* open, GuiWindow_s* handle) {
+		auto lambda = [this](const char* name, bool* open, GuiWindow_s* handle) {
 			if (!t || !v || !ibo_ptr) {
 				return;
 			}
-			ImGui::Begin("Render Transform");
+			ImGui::Begin(name);
 
 			const glm::mat4& m = t->getMatrix();
 			ImGui::Text("%f\t%f\t%f\t%f", m[0][0], m[0][1], m[0][2], m[0][3]);
@@ -85,7 +85,7 @@ namespace archt {
 
 			ImGui::End();
 		};
-		Gui_s::getInstance()->addGuiWindow_void(lambda);
+		Gui_s::getInstance()->addGuiWindow_void("Render Transform", lambda);
 	}
 
 	Renderer2D::~Renderer2D() {

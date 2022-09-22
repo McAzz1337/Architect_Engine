@@ -7,283 +7,6 @@
 
 //#define SPLASH_SCREEN
 
-//#define OLD_CODE
-#ifdef OLD_CODE
-
-float speed = 0.03f;
-float fastSpeed = 0.08f;
-float lowSPeed = 0.004;
-
-
-//#define SIMPLE_RENDERER
-
-float speeds[3] = { 0.002f, 0.02f, 0.05f };
-
-void controlSpeeds() {
-
-	ImGui::Begin("Camera speed");
-
-	ImGui::SliderFloat("CTRL", &speeds[0], 0.001f, 0.01f);
-	ImGui::SliderFloat("DEFAULT", &speeds[1], 0.01f, 0.04f);
-	ImGui::SliderFloat("SHIFT", &speeds[2], 0.04f, 0.08f);
-
-	ImGui::End();
-}
-
-
-int main() {
-
-	using namespace archt;
-
-	GLWindow* window = GLRenderAPI::init();
-
-
-
-	Gui::init(window);
-	Gui::instance->addGuiWindow([] { ImGui::ShowDemoWindow(); });
-	system_info::createSysteminfoWindow();
-	GLRenderAPI::createGuiInfoWindow();
-
-	Renderer::createInstance();
-	Renderer::instance->setRenderSettings();
-
-	Framebuffer* fb = new Framebuffer(window->getSize());
-	Framebuffer* fb2 = new Framebuffer(window->getSize());
-
-
-	Input::init();
-
-	Scene scene;
-	Entity_s e = scene.createEntity();
-	scene.addComponent<Transform_s>(e);
-
-	ptr<Camera_new> camera = make_ptr<Camera_new>(M_PI / 3.0f, 1080.0f / 720.0f, 0.001f, 100.0f);
-
-	ptr<Camera_new> camera1 = make_ptr<Camera_new>(M_PI / 3.0f, 1080.0f / 720.0f, 0.001f, 100.0f);
-	camera1->translate({ 1.0f, 0.0f, -1.0f });
-	camera1->rotate((M_PI / 4.0f), { 0.0f, 1.0f, 0.0f });
-
-
-	ptr<Entity> entity = make_ptr<Entity>();
-	ptr<Entity> entity1 = make_ptr<Entity>();
-
-
-#pragma region SETUP
-	{
-
-		float u = 1.0f / 1711.0f;
-		float v = 18.0f / 5609.0f;
-		float sizeX = 56.0f / 1711.0f;
-		float sizeY = 56.0f / 5609.0f;
-
-		uint32_t vSize = 4;
-		Vertex* verteces = new Vertex[vSize]{
-			Vertex({ -0.5f,  0.5f, 0.0f }, {0.0f, 0.0f, 0.0f}, { u, v}, 0.0f, 0.0f),
-			Vertex({  0.5f,  0.5f, 0.0f }, {0.0f, 0.0f, 0.0f}, { u + sizeX, v}, 0.0f, 0.0f),
-			Vertex({  0.5f, -0.5f, 0.0f }, {0.0f, 0.0f, 0.0f}, { u + sizeX, v + sizeY}, 0.0f, 0.0f),
-			Vertex({ -0.5f, -0.5f, 0.0f }, {0.0f, 0.0f, 0.0f}, { u, v + sizeY}, 0.0f, 0.0f)
-		};
-
-
-		uint32_t iSize = 6;
-		uint32_t* indeces = new uint32_t[iSize]{
-			0, 1, 2,
-			0, 2, 3
-		};
-
-		ptr<Mesh> mesh = make_ptr<Mesh>();
-		ptr<Mesh> mesh1 = make_ptr<Mesh>();
-		ptr<Mesh> cameraMesh = make_ptr<Mesh>();
-
-
-
-		mesh->setVBO(verteces, vSize);
-		mesh->setIBO(indeces, iSize);
-
-		mesh1->setVBO(verteces, vSize);
-		mesh1->setIBO(indeces, iSize);
-
-		verteces[0].uv = glm::vec2(0.0f, 0.0f);
-		verteces[1].uv = glm::vec2(1.0f, 0.0f);
-		verteces[2].uv = glm::vec2(1.0f, 1.0f);
-		verteces[3].uv = glm::vec2(0.0f, 1.0f);
-
-		cameraMesh->setVBO(verteces, vSize);
-		cameraMesh->setIBO(indeces, iSize);
-
-
-
-
-		ptr<Material> material = make_ptr<Material>("src/assets/shaders/fastshader/fastshader", "src/assets/img/pokememes.png");
-		Uniformbuffer* uniformBuffer = new Uniformbuffer("matrices", nullptr, 4 * 16 * 1000);
-		material->getShader().registerUniformBuffer(uniformBuffer);
-
-		ptr<Material> cameraMaterial = make_ptr<Material>("src/assets/shaders/fastshader/fastshader", "src/assets/img/camera.png");
-		cameraMaterial->getShader().registerUniformBuffer(uniformBuffer);
-
-		mesh->addComponent(material);
-		mesh1->addComponent(material);
-		cameraMesh->addComponent(cameraMaterial);
-
-		//mesh1->createGuiWindow(camera);
-
-		entity->addComponent(mesh);
-
-		mesh1->translate({ 0.3f, 0.3f, 0.0f });
-		entity1->addComponent(mesh1);
-
-		camera->addComponent<Mesh>(cameraMesh);
-
-
-	}
-
-#pragma endregion SETUP
-
-
-
-
-
-
-	while (true) {
-
-
-		window->pollEvents();
-
-#pragma region CONTROLS
-
-
-		Gui::instance->submitWIndow(controlSpeeds);
-
-		float speed = speeds[1];
-
-		if (Input::isPress(GLFW_KEY_LEFT_SHIFT) || Input::isHeld(GLFW_KEY_LEFT_SHIFT)) {
-			speed = speeds[2];
-		}
-		else if (Input::isRelease(GLFW_KEY_LEFT_SHIFT)) {
-			speed = speeds[1];
-		}
-		if (Input::isPress(GLFW_KEY_LEFT_CONTROL) || Input::isHeld(GLFW_KEY_LEFT_CONTROL)) {
-			speed = speeds[0];
-		}
-		else if (Input::isRelease(GLFW_KEY_LEFT_CONTROL)) {
-			speed = speeds[1];
-		}
-
-
-
-		if (Input::isPress(GLFW_KEY_W) || Input::isHeld(GLFW_KEY_W)) {
-			camera->translate({ 0.0f, 0.0f, speed });
-		}
-		else if (Input::isPress(GLFW_KEY_S) || Input::isHeld(GLFW_KEY_S)) {
-			camera->translate({ 0.0f, 0.0f, -speed });
-		}
-
-		if (Input::isPress(GLFW_KEY_D) || Input::isHeld(GLFW_KEY_D)) {
-			//camera->translate({ 0.003f, 0.0f, 0.0f });
-			entity1->getComponent<Mesh>()->translate({ speed, 0.0f, 0.0f });
-		}
-		else if (Input::isPress(GLFW_KEY_A) || Input::isHeld(GLFW_KEY_A)) {
-			//camera->translate({ -0.003f, 0.0f, 0.0f });
-			entity1->getComponent<Mesh>()->translate({ -speed, 0.0f, 0.0f });
-		}
-
-#pragma endregion CONTROLS
-
-
-		if (entity->getComponent<Mesh>()->checkCollision(entity1->getComponent<Mesh>(), camera)) {
-			printf("collision\n");
-		}
-
-
-		{
-			const glm::vec3& camPos = camera->getPosition();
-			const glm::vec3 camDir = { 0.0f, 0.0f, 1.0f };
-			const glm::vec3& camPos1 = camera1->getPosition();
-
-			float angle = getAngle(camPos, camPos + camDir, camPos1);
-
-			auto lambda = [angle]() {
-				ImGui::Begin("Angle");
-				ImGui::Text("Angle: \t%f", angle);
-				ImGui::End();
-
-			};
-			//Gui::instance->submitWIndow(lambda);
-
-
-		}
-
-
-		Renderer::instance->setRendertarget(fb);
-		Renderer::instance->clear();
-		Renderer::instance->beginScene(camera);
-
-		Renderer::instance->submit(entity);
-		Renderer::instance->submit(entity1);
-
-
-		Renderer::instance->render();
-		Renderer::instance->endScene();
-		Renderer::instance->flush();
-
-
-
-
-
-		Renderer::instance->setRendertarget(fb2);
-		Renderer::instance->clear();
-		Renderer::instance->beginScene(camera1);
-
-		Renderer::instance->submit(camera);
-		Renderer::instance->submit(entity);
-		Renderer::instance->submit(entity1);
-
-
-		Renderer::instance->render();
-		Renderer::instance->endScene();
-		Renderer::instance->flush();
-
-
-
-
-		//Renderer2D::instance->clear();
-		//Renderer2D::instance->beginScene(camera);
-		//
-		//Renderer2D::instance->submit(entity);
-		//
-		//Renderer2D::instance->render();
-		//Renderer2D::instance->endScene();
-		//Renderer2D::instance->flush();
-
-		Gui::instance->render();
-
-		window->swapBuffer();
-
-		if (window->shouldClose()) {
-			break;
-		}
-	}
-
-	delete window;
-
-	Input::terminate();
-
-	Gui::terminate();
-
-	Renderer::deleteInstance();
-
-	Renderer2D::deleteInstance();
-
-	GLRenderAPI::terminate();
-
-
-	return 0;
-}
-
-
-#else
-
-
 int main() {
 	using namespace archt;
 
@@ -375,10 +98,10 @@ int main() {
 	
 
 	{
+		
+		auto lambda = [&entity, cam](const char* name, bool* open, GuiWindow_s* handle) {
 
-		auto lambda = [&entity, &cam](bool* open, GuiWindow_s* handle) {
-
-			ImGui::Begin("Entity", open);
+			ImGui::Begin(name, open);
 
 			if (entity.hasComponent<Transform_s>()) {
 
@@ -436,7 +159,7 @@ int main() {
 			ImGui::End();
 
 		};
-		Gui_s::getInstance()->addGuiWindow_void(lambda);
+		Gui_s::getInstance()->addGuiWindow_void("Entity", lambda);
 	}
 
 
@@ -459,8 +182,8 @@ int main() {
 	{ 
 		renderTimer += deltaTime;
 		auto lambda = [&renderTimer, &targetFps, &targetDelta, &deltaTime, &frames, &highestFps]
-											(bool* open, GuiWindow_s* handle) {
-			ImGui::Begin("Frames", open);
+											(const char* name, bool* open, GuiWindow_s* handle) {
+			ImGui::Begin(name, open);
 			std::string fileName = "";
 			extractFileName(__FILE__, fileName, '\\');
 			ImGui::Text("File: %s", fileName.c_str());
@@ -477,7 +200,7 @@ int main() {
 
 			ImGui::End();
 		};
-		Gui_s::getInstance()->addGuiWindow_void(lambda);
+		Gui_s::getInstance()->addGuiWindow_void("Frames", lambda);
 	}
 
 #ifdef SPLASH_SCREEN

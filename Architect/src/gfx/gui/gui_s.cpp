@@ -208,12 +208,12 @@ namespace archt {
 
 		
 
-		auto lambda = [this](bool* open, GuiWindow_s* handle) {
+		auto lambda = [this](const char* name, bool* open, GuiWindow_s* handle) {
 
 
 
 			ImGuiStyle& style = ImGui::GetStyle();
-			ImGui::Begin("Style", open);
+			ImGui::Begin(name, open);
 
 			if (!(*open)) {
 				styleWindow = nullptr;
@@ -228,7 +228,7 @@ namespace archt {
 				if (ImGui::Button(symbols[i].c_str(), buttonSize)) {
 					
 
-					auto colorPicker = [this](bool* open, GuiWindow_s* handle, int index) {
+					auto colorPicker = [this](const char* name, bool* open, GuiWindow_s* handle, int index) {
 
 						if (ImGui::Begin(symbols[index].c_str(), open)) {
 
@@ -239,7 +239,7 @@ namespace archt {
 
 						ImGui::End();
 					};
-					addGuiWindow_args(colorPicker, nullptr, i);
+					addGuiWindow_args("Colorpicker", colorPicker, nullptr, i);
 				}
 				ImGui::SameLine();
 				ImGui::ColorButton(symbols[i].c_str(), style.Colors[i], 0, buttonSize);
@@ -280,7 +280,7 @@ namespace archt {
 		};
 
 		if (!styleWindow) {
-			styleWindow = addGuiWindow_void(lambda);
+			styleWindow = addGuiWindow_void("Style", lambda);
 		}
 	}
 

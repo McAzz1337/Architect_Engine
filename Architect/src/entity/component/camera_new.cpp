@@ -17,8 +17,8 @@ namespace archt {
 		translate({ 0.0f, 0.0f, -1.0f });
 
 
-		auto lambda = [this](bool* open, GuiWindow_s* handle) {
-			ImGui::Begin("Camera");
+		auto lambda = [this](const char* name, bool* open, GuiWindow_s* handle) {
+			ImGui::Begin(name);
 
 			ImGui::Text("Matrix:");
 			glm::mat4 m = view.getMatrix();
@@ -32,7 +32,7 @@ namespace archt {
 
 			ImGui::End();
 		};
-		Gui_s::getInstance()->addGuiWindow_void(lambda);
+		Gui_s::getInstance()->addGuiWindow_void("Camera", lambda);
 
 	}
 

@@ -8,8 +8,8 @@ namespace archt {
 
 	GuiWindow_s::GuiWindow_s(CloseCallback callback) : callback(callback) {}
 
-	GuiWindow_s::GuiWindow_s(std::function<void(bool*, GuiWindow_s*)> func, CloseCallback callback)
-		: func(func), callback(callback) {
+	GuiWindow_s::GuiWindow_s(const char* name, std::function<void(const char*, bool*, GuiWindow_s*)> func, CloseCallback callback)
+		: name(name), func(func), callback(callback) {
 	
 	}
 
@@ -23,7 +23,7 @@ namespace archt {
 	}
 
 	void GuiWindow_s::operator()() {
-		func(&open, this);
+		func(name, &open, this);
 	}
 
 

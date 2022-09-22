@@ -157,8 +157,8 @@ namespace archt {
 
 	void GLRenderAPI::createGuiInfoWindow() {
 	
-		auto window = [](bool* open, GuiWindow_s* handle) {
-			ImGui::Begin("Video card info");
+		auto window = [](const char* name, bool* open, GuiWindow_s* handle) {
+			ImGui::Begin(name);
 
 			ImVec4 green = { 0.0f, 1.0f, 0.0f, 1.0f };
 			ImVec4 white = { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -197,7 +197,7 @@ namespace archt {
 			ImGui::End();
 		};
 
-		Gui_s::getInstance()->addGuiWindow_void(window);
+		Gui_s::getInstance()->addGuiWindow_void("Video card info", window);
 	}
 
 	void GLRenderAPI::setViewport(const glm::vec4& v) {

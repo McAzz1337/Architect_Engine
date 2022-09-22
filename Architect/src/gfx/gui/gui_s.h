@@ -47,17 +47,17 @@ namespace archt {
 
 		
 		// closable windows------------------------------------------------
-		template <typename = std::function<void(bool*, GuiWindow_s*)>>
-		GuiWindow_s* addGuiWindow_void(std::function<void(bool*, GuiWindow_s*)> f, CloseCallback callback = nullptr) {
+		template <typename = std::function<void(const char*, bool*, GuiWindow_s*)>>
+		GuiWindow_s* addGuiWindow_void(const char* name, std::function<void(const char*, bool*, GuiWindow_s*)> f, CloseCallback callback = nullptr) {
 
-			constantWindows.push_back(new GuiWindow_s(f, callback));
+			constantWindows.push_back(new GuiWindow_s(name, f, callback));
 			return constantWindows[constantWindows.size() - 1];
 		}
 
 		template <typename F, typename = CloseCallback, typename... Args>
-		GuiWindow_s* addGuiWindow_args(F&& f, CloseCallback callback,  Args&&... args) {
+		GuiWindow_s* addGuiWindow_args(const char* name, F&& f, CloseCallback callback,  Args&&... args) {
 
-			constantWindows.push_back(createGuiWindow_args(f, callback, std::forward<Args>(args)...));
+			constantWindows.push_back(createGuiWindow_args(name, f, callback, std::forward<Args>(args)...));
 			return constantWindows[constantWindows.size() - 1];
 		}
 
