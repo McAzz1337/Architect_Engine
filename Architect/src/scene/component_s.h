@@ -32,6 +32,8 @@ namespace archt {
 		void rotate(float angle, const glm::vec3& axis);
 		void scale(const glm::vec3& s);
 
+		glm::vec3 getPosition() const;
+
 		inline Transform_s operator*(const Transform_s& other) {
 			return Transform_s(transform * other.transform);
 		}

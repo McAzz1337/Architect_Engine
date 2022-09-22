@@ -370,11 +370,14 @@ bin
 premake5.exe
 GenerateProject.bat
 
-Architect.sln
+Architect_Engine.sln
 
 Architect/Architect.vcxproj
 Architect/Architect.vcxproj.filters
 Architect/Architect.vcxproj.user
+
+Architect/imgui.ini
+
 
 Architect/vendor
 
@@ -385,6 +388,9 @@ Architect/src/assets/img
 PoKeMeMe/PoKeMeMe.vcxproj
 PoKeMeMe/PoKeMeMe.vcxproj.filters
 PoKeMeMe/PoKeMeMe.vcxproj.user
+
+PoKeMeMe/PoKeMeMe.imgui.ini
+
 
 PoKeMeMe/src/assets/audio
 PoKeMeMe/src/assets/img

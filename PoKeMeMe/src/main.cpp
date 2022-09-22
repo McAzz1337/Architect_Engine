@@ -216,6 +216,12 @@ int main() {
 
 	window->show();
 
+	BezierreCurve curve({ 0.0f, 0.0f, 0.0f }, { 1.0f, 0.0f, 0.0f });
+	curve.addAnchor({ 0.33333f, 0.5f, 0.0f });
+	curve.addAnchor({ 0.66666f, -0.5f, 0.0f });
+	Curve crv = curve.getCurve();
+
+
 	while (true) {
 
 		deltaTime = delta::getDelta<delta::seconds>(last);
@@ -277,6 +283,16 @@ int main() {
 			}
 		}
 #pragma endregion CAMERA_CONTROLS
+
+		{
+			static delta::archt_time timer = delta::getTimePoint();
+			Transform_s& transform = entity.getComponent<Transform_s>();
+			glm::vec3 pos = transform.getPosition();
+			glm::vec3 dst = crv.getPosition(delta::getDelta<delta::seconds>(timer, false));
+			glm::vec3 translation = dst - pos;
+			transform.translate(translation);
+		}
+
 
 		
 		if (renderTimer >= targetDelta) {
