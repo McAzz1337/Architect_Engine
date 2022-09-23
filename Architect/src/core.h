@@ -10,6 +10,7 @@
 #include "chronos/deltatime.h"
 #include "chronos/delta.h"
 
+#include "console/console.h"
 
 #include "filesystem/filemanager.h"
 

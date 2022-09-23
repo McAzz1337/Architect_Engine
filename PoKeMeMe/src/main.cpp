@@ -16,6 +16,8 @@ int main() {
 
 	GLWindow* window = GLRenderAPI::init();
 	Gui::init(window);
+	Console console;
+	console.createGuiWindow();
 	GLRenderAPI::createGuiInfoWindow();
 	system_info::createSysteminfoWindow();
 
