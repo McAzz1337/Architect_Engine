@@ -15,10 +15,10 @@ int main() {
 #endif
 
 	GLWindow* window = GLRenderAPI::init();
+
 	Gui::init(window);
-	Console console;
-	console.createGuiWindow();
 	GLRenderAPI::createGuiInfoWindow();
+	Console::getInstance().createGuiWindow();
 	system_info::createSysteminfoWindow();
 
 	auto task = []() {

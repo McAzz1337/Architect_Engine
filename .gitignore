@@ -380,10 +380,10 @@ Architect/Architect.vcxproj.user
 Architect/imgui.ini
 
 
-Architect/vendor
+Architect/vendor/
 
-Architect/src/assets/audio
-Architect/src/assets/img
+Architect/src/assets/audio/
+Architect/src/assets/img/
 
 
 PoKeMeMe/PoKeMeMe.vcxproj
@@ -393,5 +393,5 @@ PoKeMeMe/PoKeMeMe.vcxproj.user
 PoKeMeMe/PoKeMeMe.imgui.ini
 
 
-PoKeMeMe/src/assets/audio
-PoKeMeMe/src/assets/img
+PoKeMeMe/src/assets/audio/
+PoKeMeMe/src/assets/img/

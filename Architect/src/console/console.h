@@ -7,6 +7,10 @@ namespace archt {
 
 	class Console {
 
+	private:
+		static Console instance;
+
+	public:
 		char buffer[256];
 		LinkedList<std::string> log;
 		LinkedList<std::string> history;
@@ -26,6 +30,7 @@ namespace archt {
 		int textEditCallback(ImGuiInputTextCallbackData* data);
 
 
+		static Console& getInstance();
 	};
 
 
