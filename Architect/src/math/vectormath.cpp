@@ -39,6 +39,12 @@ namespace archt {
 
 
 
+	bool rayIntersectFace(const Ray& ray, const glm::vec3& a, const glm::vec3& b, const glm::vec3& c) {
+
+
+
+		return false;
+	}
 
 
 }
