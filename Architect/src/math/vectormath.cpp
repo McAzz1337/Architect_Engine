@@ -41,6 +41,28 @@ namespace archt {
 
 	bool rayIntersectFace(const Ray& ray, const glm::vec3& a, const glm::vec3& b, const glm::vec3& c) {
 
+		const glm::vec3 normal = glm::cross(a, b);
+		
+		float d = glm::dot(normal, a);
+
+		float t = glm::dot(normal, ray.origin) / glm::dot(normal, ray.direction);
+
+		const glm::vec3 hit = ray.origin + t * ray.direction;
+
+		const glm::vec3 e0 = b - a;
+		const glm::vec3 e1 = c - b;
+		const glm::vec3 e2 = a - c;
+
+		const glm::vec3 c0 = hit - a;
+		const glm::vec3 c1 = hit - b;
+		const glm::vec3 c2 = hit - c;
+
+		if (glm::dot(normal, glm::cross(e0, c0)) > 0 &&
+			glm::dot(normal, glm::cross(e1, c1)) > 0 &&
+			glm::dot(normal, glm::cross(e2, c2)) > 0) {
+		
+			return true;
+		}
 
 
 		return false;

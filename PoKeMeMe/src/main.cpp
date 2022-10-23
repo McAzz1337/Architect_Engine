@@ -283,6 +283,25 @@ int main() {
 			else if (Input::isPress(GLFW_KEY_D) || Input::isHeld(GLFW_KEY_D)) {
 				controlledCamera->translate({ cameraSpeed, 0.0f, 0.0f });
 			}
+
+
+			if (Input::isMousePress(GLFW_MOUSE_BUTTON_1) || Input::isMouseHeld(GLFW_MOUSE_BUTTON_1)) {
+				Ray ray;
+				controlledCamera->castRay(ray);
+				ray.length = 1000;
+				
+				Vertex* verteces = entity.getComponent<Mesh_s>().vbo->getData();
+				
+				if (rayIntersectFace(ray, verteces[0].pos, verteces[1].pos, verteces[2].pos)) {
+
+					Console::getInstance() << "HIT!";
+				}
+				else {
+					Console::getInstance() << "NO HIT!";
+				}
+
+			}
+
 		}
 #pragma endregion CAMERA_CONTROLS
 
@@ -292,7 +311,7 @@ int main() {
 			glm::vec3 pos = transform.getPosition();
 			glm::vec3 dst = crv.getPosition(delta::getDelta<delta::seconds>(timer, false));
 			glm::vec3 translation = dst - pos;
-			transform.translate(translation);
+			//transform.translate(translation);
 		}
 
 

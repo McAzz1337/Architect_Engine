@@ -6,6 +6,8 @@ namespace archt {
 
 
 	uint32_t Input::keys[MAX_KEYS];
+	uint32_t Input::buttons[MAX_BUTTONS];
+
 
 	void Input::init() {
 		for (int i = 0; i < MAX_KEYS; i++)
@@ -40,6 +42,36 @@ namespace archt {
 	
 	bool Input::isHeld(int key) {
 		return keys[key] == KEY_HOLD;
+	}
+
+	void Input::pressMouse(int button) {
+	
+		buttons[button] = KEY_PRESS;
+	}
+
+	void Input::holdMouse(int button) {
+		
+		buttons[button] = KEY_HOLD;
+	}
+
+	void Input::releaseMouse(int button) {
+	
+		buttons[button] = KEY_RELEASED;
+	}
+
+	bool Input::isMouseRelease(int button) {
+		
+		return buttons[button] == KEY_RELEASED;
+	}
+
+	bool Input::isMousePress(int button) {
+
+		return buttons[button] == KEY_PRESS;
+	}
+
+	bool Input::isMouseHeld(int button) {
+
+		return buttons[button] == KEY_HOLD;
 	}
 
 }

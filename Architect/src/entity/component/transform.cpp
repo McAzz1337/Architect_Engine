@@ -38,6 +38,12 @@ namespace archt {
 		return Transform(glm::inverse(matrix));
 	}
 
+	glm::vec4 Transform::operator[](int i) const {
+		
+		return (glm::vec4) matrix[i];
+	}
+
+
 	
 	Transform Transform::operator*(const Transform other) const {
 		return Transform(matrix * other.matrix);

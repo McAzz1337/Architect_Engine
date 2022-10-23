@@ -4,6 +4,8 @@
 #include <glm/vec3.hpp>
 #include <glm/gtx/transform.hpp>
 
+#include "../../math/ray.h"
+
 namespace archt {
 
 
@@ -21,6 +23,8 @@ namespace archt {
 		void rotate(const glm::vec3& axis, float angle);
 
 		void resetMatrix();
+
+		void castRay(Ray& ray) const;
 
 		inline const glm::mat4& getProjection() const { return projection; }
 		inline const glm::mat4& getView() const { return glm::inverse(view); }

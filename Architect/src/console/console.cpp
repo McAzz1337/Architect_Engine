@@ -19,7 +19,7 @@ namespace archt {
 	
 
 
-	void Console::operator<<(std::string* msg) {
+	void Console::operator<<(std::string msg) {
 		log >> msg;
 	}
 
@@ -42,14 +42,14 @@ namespace archt {
 
 			float windowHeight = ImGui::GetWindowHeight();
 
-			Node<std::string>* msg = log[log.size() - 1];
+			Node<std::string>* msg = log[0];
 			float logHeight = 0.0f;
 			int items = 0;
 			float padding = 10.0f;
 
 			while (logHeight < windowHeight - ImGui::GetTextLineHeight()) {
 				if (msg)
-					logHeight += ImGui::CalcTextSize(msg->data->c_str()).y + padding;
+					logHeight += ImGui::CalcTextSize(msg->data.c_str()).y + padding;
 				else
 					logHeight += ImGui::GetTextLineHeight() + padding;
 
@@ -62,11 +62,11 @@ namespace archt {
 			if (index < 0)
 				index = 0;
 
-			msg = log[index];
+			msg = log[0];
 			int i = 0;
 			while (i < items) {
 				if (msg && ((items - i) <= log.size())) {
-					ImGui::Text(msg->data->c_str());
+					ImGui::Text(msg->data.c_str());
 					msg = msg->next;
 				}
 				else
@@ -88,8 +88,8 @@ namespace archt {
 			if (ImGui::InputText("cmd", buffer, 256, input_text_flags, textEditCallback, (void*) this)) {
 				Strtrim(buffer);
 				if (buffer[0]) {
-					log >> new std::string(buffer);
-					history >> new std::string(buffer);
+					log >> buffer;
+					history >> buffer;
 				}
 				printf("reset buf\n");
 				strcpy(buffer, "");
@@ -134,7 +134,7 @@ namespace archt {
 
                 if (prev_history_pos != historyPos) {
 
-                    const char* history_str = (historyPos > -1) ? history[historyPos]->data->c_str() : "";
+                    const char* history_str = (historyPos > -1) ? history[historyPos]->data.c_str() : "";
 					data->DeleteChars(0, data->BufTextLen);
 					data->InsertChars(0, history_str);
                 }

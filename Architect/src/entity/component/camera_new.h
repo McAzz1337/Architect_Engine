@@ -11,6 +11,8 @@
 #include <glm/vec3.hpp>
 #include <glm/gtx/transform.hpp>
 
+#include "../../math/ray.h"
+
 namespace archt {
 
 	class Camera_new : public Entity {
@@ -31,6 +33,8 @@ namespace archt {
 		void rotate(float angle, const glm::vec3& axis);
 
 		void resetMatrix();
+
+		void castRay(Ray& ray) const;
 
 
 		inline glm::vec3 getPosition() const { return glm::vec3(view.getMatrix()[3]); };

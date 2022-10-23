@@ -10,18 +10,17 @@ namespace archt {
 		Node<T>* previous = nullptr;
 		Node<T>* next = nullptr;
 
-		T* data = nullptr;
+		T data;
 
 		Node() {
 
 		}
 
-		Node(T* data) : data(data) {
+		Node(const T& data) : data(data) {
 
 		}
 
 		~Node() {
-			delete data;
 		}
 
 		void operator<<(Node<T>* node) {
@@ -72,6 +71,10 @@ namespace archt {
 
 		Node<T>* operator[](int index) {
 
+			if (size() == 0) {
+				return nullptr;
+			}
+
 			Node<T>* node = start;
 			for (int i = 0; i < index; i++) {
 
@@ -81,30 +84,35 @@ namespace archt {
 			return node;
 		}
 
-		void operator<<(T* data) {
+		void operator<<(const T& data) {
 			
 			Node<T>* node = new Node<T>(data);
-			start->previous = node;
-			node->next = start;
-			start = node;
+			
+
+			if (size() > 0) {
+				end->next = node;
+				node->previous = end;
+				end = node;
+			}
+			else {
+				start = node;
+				end = node;
+			}
 		}
 
-		void operator>>(T* data) {
-
-			if (!start) {
-				start = new Node<T>(data);
-				return;
-			}
-			else if (!end) {
-				start->next = new Node<T>(data);
-				end = start->next;
-				return;
-			}
+		void operator>>(const T& data) {
 
 			Node<T>* node = new Node<T>(data);
-			end->next = node;
-			node->previous = end;
-			end = node;
+
+			if (size() > 0) {
+				start->previous = node;
+				node->next = start;
+				start = node;
+			}
+			else {
+				start = node;
+				end = node;
+			}
 		}
 	};
 

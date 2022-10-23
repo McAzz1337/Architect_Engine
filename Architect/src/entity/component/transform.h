@@ -33,6 +33,7 @@ namespace archt {
 		void operator*=(const Transform other);
 		void operator<<(const Transform other);
 
+		glm::vec4 operator[](int i) const;
 		glm::vec4 operator*(const glm::vec3& v) const ;
 		void operator*=(const glm::vec3& v);
 

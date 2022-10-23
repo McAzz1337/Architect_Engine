@@ -50,6 +50,27 @@ namespace archt {
 		}
 	}
 
+
+	void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
+
+		if (button > MAX_BUTTONS)
+			return;
+
+		switch (action) {
+			case GLFW_PRESS: 
+				Input::pressMouse(button);
+				break;
+			case GLFW_REPEAT: 
+				Input::holdMouse(button);
+				break;
+			case GLFW_RELEASE: 
+				Input::releaseMouse(button);
+				break;
+		}
+
+	}
+
+
 	void resizeCallback(GLFWwindow* window, int width, int height) {
 		GLWindow* w = (GLWindow*) glfwGetWindowUserPointer(window);
 		w->setSize(width, height);
@@ -111,6 +132,9 @@ namespace archt {
 		//toggleFullscreen();
 
 		glfwSetKeyCallback(window, keyCallback);
+		
+		glfwSetMouseButtonCallback(window, mouseButtonCallback);
+
 		glfwSetWindowSizeCallback(window, resizeCallback);
 		glfwSetWindowUserPointer(window, this);
 		glfwSetErrorCallback(errorCallback);

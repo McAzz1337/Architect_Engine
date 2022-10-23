@@ -35,4 +35,11 @@ namespace archt {
 		translate({ 0.0f, 0.0f, 1.0f });
 	}
 
+
+	void Camera::castRay(Ray& ray) const {
+		ray.origin = (glm::vec3) view[3];
+		ray.direction = (glm::vec3) view[2];
+	}
+
+
 }

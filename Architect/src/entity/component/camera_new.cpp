@@ -54,6 +54,10 @@ namespace archt {
 
 	
 
+	void Camera_new::castRay(Ray& ray) const {
+		ray.origin = (glm::vec3) view[3];
+		ray.direction = (glm::vec3) view[2];
+	}
 	
 
 

@@ -21,7 +21,7 @@ namespace archt {
 		~Console();
 
 
-		void operator<<(std::string* msg);
+		void operator<<(std::string msg);
 		
 		static void Strtrim(char* s);
 
