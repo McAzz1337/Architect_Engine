@@ -174,8 +174,8 @@ int main() {
 
 	int frames = 0;
 	int highestFps = 0;
-	delta::archt_time last = delta::getTimePoint();
-	delta::archt_time now;
+	delta::Time last = delta::getTimePoint();
+	delta::Time now;
 	float deltaTime = 0.0f;
 	float secondsTimer = 0.0f;
 	float renderTimer = 0.0f;
@@ -306,7 +306,7 @@ int main() {
 #pragma endregion CAMERA_CONTROLS
 
 		{
-			static delta::archt_time timer = delta::getTimePoint();
+			static delta::Time timer = delta::getTimePoint();
 			Transform_s& transform = entity.getComponent<Transform_s>();
 			glm::vec3 pos = transform.getPosition();
 			glm::vec3 dst = crv.getPosition(delta::getDelta<delta::seconds>(timer, false));

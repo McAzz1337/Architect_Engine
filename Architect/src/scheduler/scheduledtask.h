@@ -13,7 +13,7 @@ namespace archt {
 
 	protected:
 		float delay = 10.0f;
-		delta::archt_time submissionTime;
+		delta::Time submissionTime;
 
 	public:
 		ScheduledTask();

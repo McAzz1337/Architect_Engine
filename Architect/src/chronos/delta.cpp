@@ -3,8 +3,8 @@
 namespace archt {
 
 	namespace delta {
-		archt_time getTimePoint() {
-			return std::chrono::system_clock::now();
+		Time getTimePoint() {
+			return std::chrono::high_resolution_clock().now();
 		}
 
 	}
