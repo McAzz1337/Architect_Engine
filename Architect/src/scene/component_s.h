@@ -8,6 +8,8 @@
 #include "../gfx/opengl/gltexture.h"
 #include "../gfx/opengl/glshader.h"
 
+#include "../math/ray.h"
+
 #include "../ptr.h"
 
 #include "../entity/component/material/uniform.h"
@@ -23,7 +25,7 @@ namespace archt {
 		glm::mat4 transform = glm::mat4(1.0f);
 
 		Transform_s();
-		Transform_s(glm::mat4 transform);
+		Transform_s(float value);
 		Transform_s(const Transform_s& other);
 		//Transform_s(Transform_s&& other) noexcept;
 		~Transform_s();
@@ -34,9 +36,23 @@ namespace archt {
 
 		glm::vec3 getPosition() const;
 
-		inline Transform_s operator*(const Transform_s& other) {
-			return Transform_s(transform * other.transform);
+		Transform_s inverse() const;
+
+
+		glm::vec4 operator[](int i) const;
+
+
+		inline Transform_s operator*(const Transform_s& other) const {
+			
+			Transform_s t;
+			t.transform = transform * other.transform;
+
+			return t;
 		}
+
+		//inline glm::mat4 operator*(const glm::mat4& mat) {
+		//	return transform * mat;
+		//}
 
 		inline operator glm::mat4() {
 			return transform;
@@ -104,6 +120,29 @@ namespace archt {
 
 	};
 
-	
+	struct Camera_s {
+
+		Transform_s view;
+		Transform_s projection;
+
+		Camera_s();
+		~Camera_s();
+
+		static Camera_s makePerspective(float fov, float aspect, float nearClip, float farClip);
+		static Camera_s makeOrthographic(float left, float right, float top, float bottom, float nearClip, float farClip);
+
+		void translate(const glm::vec3& t);
+		void rotate(float angle, const glm::vec3& axis);
+		void scale(const glm::vec3& s);
+
+		void castRay(Ray& ray) const;
+		
+		inline glm::vec3 getPosition() const { return (glm::vec3) view[3]; }
+
+		inline const Transform_s& getView() const { return view; }
+		inline const Transform_s& getProjection() const { return projection; }
+		inline Transform_s getViewProjection() const { return projection * view; }
+
+	};
 
 }

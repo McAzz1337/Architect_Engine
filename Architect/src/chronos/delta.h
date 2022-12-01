@@ -47,7 +47,7 @@ namespace archt {
 			if (outputNewTime)
 				time = now;
 
-			rerurn delta;
+			return delta;
 		}
 
 

@@ -80,7 +80,7 @@ namespace archt {
 	}
 
 
-	void SceneRenderer::beginScene(Scene* s, ptr<Camera_new> camera) {
+	void SceneRenderer::beginScene(Scene* s, Camera_s* camera) {
 		inScene = true;
 		
 		if (scene) 
@@ -143,7 +143,7 @@ namespace archt {
 
 	
 		activeShader = entities[0].getComponent<Material_s>().shader;
-		Transform_s projectionView = cam->getProjectionView().getMatrix(); // todo switch camera
+		Transform_s projectionView = cam->getViewProjection(); // todo switch camera
 		
 		for (int i = 0; i < currentEntity; i++) {
 		

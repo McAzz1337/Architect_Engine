@@ -5,6 +5,10 @@
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "gfx/opengl/buffers.h"
+
+#include "../console/console.h"
+
 namespace archt {
 
 	void print(const glm::mat3& m, const glm::vec3 r, int stage) {
@@ -64,6 +68,36 @@ namespace archt {
 			return true;
 		}
 
+
+		return false;
+	}
+
+	bool rayIntersectGeometry(const Ray& ray, VBO* vbo, IBO* ibo) {
+
+		uint32_t vCount = vbo->getSize();
+		Vertex* verteces = vbo->getData();
+
+		uint32_t iCount = ibo->getSize();
+		uint32_t* indeces = ibo->getData();
+
+		for (int i = 0; i < iCount; i += 3) {
+
+			Vertex& a = verteces[indeces[i]];
+			Vertex& b = verteces[indeces[i + 1]];
+			Vertex& c = verteces[indeces[i + 2]];
+
+			if (rayIntersectFace(ray, a.pos, b.pos, c.pos)) {
+				std::string msg = "Ray hit @ face: " + 
+									std::to_string(indeces[i]) + ", " + 
+									std::to_string(indeces[i + 1]) + ", " + 
+									std::to_string(indeces[i + 2]);
+				
+				Console::getInstance() << msg;
+				
+				return true;
+			}
+
+		}
 
 		return false;
 	}

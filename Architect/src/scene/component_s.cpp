@@ -15,7 +15,7 @@ namespace archt {
 
 	Transform_s::Transform_s() {}
 
-	Transform_s::Transform_s(glm::mat4 transform) : transform(transform) {
+	Transform_s::Transform_s(float value) : transform(value) {
 	}
 
 	Transform_s::Transform_s(const Transform_s& other) : transform(other.transform) {}
@@ -25,6 +25,12 @@ namespace archt {
 
 	Transform_s::~Transform_s() {
 	}
+
+	glm::vec4 Transform_s::operator[](int i) const {
+		
+		return transform[i];
+	}
+
 
 	void Transform_s::translate(const glm::vec3& t) {
 		transform = glm::translate(transform, t);
@@ -40,6 +46,14 @@ namespace archt {
 
 	glm::vec3 Transform_s::getPosition() const {
 		return glm::vec3(transform[3]);
+	}
+
+	Transform_s Transform_s::inverse() const {
+		
+		Transform_s t;
+		t.transform = glm::inverse(transform);
+		
+		return t;
 	}
 
 
@@ -190,6 +204,58 @@ namespace archt {
 
 	AudioComponent::~AudioComponent() {
 	
+	}
+
+
+
+
+
+
+	Camera_s::Camera_s() : view(1.0f) {
+
+	}
+
+	Camera_s::~Camera_s() {
+
+	}
+
+	Camera_s Camera_s::makePerspective(float fov, float aspect, float nearClip, float farClip) {
+
+		Camera_s cam;
+		cam.projection.transform = glm::perspective(fov, aspect, nearClip, farClip);
+
+		return cam;
+	}
+
+	Camera_s Camera_s::makeOrthographic(float left, float right, float top, float bottom, float nearClip, float farClip) {
+
+		Camera_s cam;
+		
+		cam.projection.transform = glm::ortho(left, right, bottom, top, nearClip, farClip);
+
+		return cam;
+	}
+
+	void Camera_s::castRay(Ray& ray) const {
+
+		ray.origin = view.getPosition();
+		ray.direction = (glm::vec3) view[2];
+	}
+
+
+	void Camera_s::translate(const glm::vec3& t) {
+		
+		view.translate(t);
+	}
+	
+	void Camera_s::rotate(float angle, const glm::vec3& axis) {
+
+		view.rotate(angle, axis);
+	}
+	
+	void Camera_s::scale(const glm::vec3& s) {
+
+		view.scale(s);
 	}
 
 

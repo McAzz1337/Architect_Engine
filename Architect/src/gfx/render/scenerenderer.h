@@ -9,6 +9,7 @@
 #include "../opengl/glvertexarray.h"
 #include "../opengl/glshader.h"
 #include "../opengl/framebuffer.h"
+#include "../../scene/component_s.h"
 
 #include <typeindex>
 
@@ -27,7 +28,7 @@ namespace archt {
 
 		bool inScene = false;
 
-		ptr<Camera_new> cam = nullptr;
+		Camera_s* cam = nullptr;
 
 		Framebuffer* fb = nullptr;
 
@@ -62,7 +63,7 @@ namespace archt {
 
 		void clear();
 
-		void beginScene(Scene* s = nullptr, ptr<Camera_new> camera = nullptr);
+		void beginScene(Scene* s = nullptr, Camera_s* camera = nullptr);
 		void endScene();
 
 		void submit(Entity_s entity);

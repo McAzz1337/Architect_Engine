@@ -31,17 +31,19 @@ int main() {
 
 	Scene scene;
 
-	ptr<Camera_new> cam;
-	ptr<Camera_new> cam1;
+	Camera_s cam;
+	Camera_s cam1;
 
 	Entity_s camEnt = scene.createEntity();
 	camEnt.addComponent<Transform_s>();
 	{
 		glm::ivec2 windowSize = window->getSize();
-		cam = make_ptr<Camera_new>(M_PI / 3.0f, windowSize.x / windowSize.y, 0.01f, 100.0f);
-		cam1 = make_ptr<Camera_new>(M_PI / 3.0f, windowSize.x / windowSize.y, 0.01f, 100.0f);
-		cam1->translate({ -0.8f, 0.0f, -1.0f });
-		cam1->rotate(M_PI / 12.0f, { 0.0f, 1.0f, 0.0f });
+		cam = Camera_s::makePerspective(M_PI / 3.0f, windowSize.x / windowSize.y, 0.01f, 100.0f);
+		cam.translate({ 0.0f, 0.0f, -1.0f });
+
+		cam1 = Camera_s::makePerspective(M_PI / 3.0f, windowSize.x / windowSize.y, 0.01f, 100.0f);
+		cam1.translate({ -0.8f, 0.0f, -1.0f });
+		cam1.rotate(M_PI / 12.0f, { 0.0f, 1.0f, 0.0f });
 	}
 
 #pragma region ENTITY_SETUP
@@ -98,7 +100,6 @@ int main() {
 	renderer->setRenderSettings();
 
 	
-
 	{
 		
 		auto lambda = [&entity, cam](const char* name, bool* open, GuiWindow* handle) {
@@ -116,7 +117,7 @@ int main() {
 				ImGui::Separator();
 
 				ImGui::Text("MVP");
-				glm::mat4 n = cam->getProjectionView().getMatrix() * entity.getComponent<Transform_s>().transform;
+				Transform_s n = cam.getViewProjection() * entity.getComponent<Transform_s>();
 				for (int i = 0; i < 4; i++) {
 					ImGui::Text("%f\t%f\t%f\t%f", n[i][0], n[i][1], n[i][2], n[i][3]);
 				}
@@ -245,12 +246,13 @@ int main() {
 		}
 #pragma region CAMERA_CONTROLS
 		
-		ptr<Camera_new> controlledCamera = nullptr;
+		Camera_s* controlledCamera = nullptr;
+
 		if (fb.getGuiWindow() == Gui::getInstance()->getFocusedWindow()) {
-			controlledCamera = cam;
+			controlledCamera = &cam;
 		}
 		else if (fb1.getGuiWindow() == Gui::getInstance()->getFocusedWindow()) {
-			controlledCamera = cam1;
+			controlledCamera = &cam1;
 		}
 
 		if (controlledCamera) {
@@ -290,9 +292,10 @@ int main() {
 				controlledCamera->castRay(ray);
 				ray.length = 1000;
 				
-				Vertex* verteces = entity.getComponent<Mesh_s>().vbo->getData();
-				
-				if (rayIntersectFace(ray, verteces[0].pos, verteces[1].pos, verteces[2].pos)) {
+				VBO* vbo = entity.getComponent<Mesh_s>().vbo;
+				IBO* ibo = entity.getComponent<Mesh_s>().ibo;
+
+				if (rayIntersectGeometry(ray, vbo, ibo)) {
 
 					Console::getInstance() << "HIT!";
 				}
@@ -303,6 +306,8 @@ int main() {
 			}
 
 		}
+
+
 #pragma endregion CAMERA_CONTROLS
 
 		{
@@ -320,7 +325,7 @@ int main() {
 			renderer->setRendertarget(&fb);
 			
 			renderer->clear();
-			renderer->beginScene(&scene, cam);
+			renderer->beginScene(&scene, &cam);
 			
 			renderer->submit(entity);
 			
@@ -329,16 +334,16 @@ int main() {
 			renderer->flush();
 
 
-			camEnt.getComponent<Transform_s>() = cam->getView().inverse().getMatrix();
+			camEnt.getComponent<Transform_s>() = cam.getView().inverse();
 
-			float angle = getAngle(cam->getPosition(), cam->getPosition() + glm::vec3(0.0f, 0.0f, 0.1f), cam1->getPosition());
+			float angle = getAngle(cam.getPosition(), cam.getPosition() + glm::vec3(0.0f, 0.0f, 0.1f), cam1.getPosition());
 			camEnt.getComponent<Transform_s>().rotate(-angle, { 0.0f, 1.0f, 0.0f });
 
 
 			renderer->setRendertarget(&fb1);
 			
 			renderer->clear();
-			renderer->beginScene(&scene, cam1);
+			renderer->beginScene(&scene, &cam1);
 			
 			renderer->submit(entity);
 			renderer->submit(camEnt);

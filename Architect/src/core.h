@@ -22,6 +22,8 @@
 #include "gfx/render/renderer2d.h"
 #include "gfx/render/scenerenderer.h"
 
+#include "gfx/opengl/wireframerenderer.h"
+
 #include "gfx/gui/gui.h"
 #include "gfx/gui/guiwindow.h"
 

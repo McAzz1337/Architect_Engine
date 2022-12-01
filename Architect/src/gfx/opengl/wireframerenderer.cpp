@@ -1,6 +1,14 @@
 #include "wireframerenderer.h"
 
 #include "glrenderapi.h"
+#include "wireframerenderer.h"
+#include "wireframerenderer.h"
+#include "wireframerenderer.h"
+#include "wireframerenderer.h"
+#include "wireframerenderer.h"
+#include "wireframerenderer.h"
+#include "wireframerenderer.h"
+#include "wireframerenderer.h"
 namespace archt {
 
 	const int WireframeRenderer::MAX_OBJECTS = 1000;
@@ -24,6 +32,7 @@ namespace archt {
 	GLVertexarray* WireframeRenderer::vao = nullptr;
 
 	GLShader* WireframeRenderer::shader = nullptr;
+
 
 
 	void WireframeRenderer::init() {
@@ -59,6 +68,7 @@ namespace archt {
 		shader->registerUniformBuffer(colrs);
 	}
 
+
 	void WireframeRenderer::terminate() {
 		delete shader;
 
@@ -70,6 +80,8 @@ namespace archt {
 		delete vbo;
 		delete vao;
 	}
+
+
 
 	void WireframeRenderer::clear() {
 		glClear(GLRenderAPI::clearMask);
@@ -99,19 +111,18 @@ namespace archt {
 
 	uint32_t* WireframeRenderer::reorderIndeces(uint32_t* src, uint32_t size, uint32_t& out_size) {
 
-		out_size = 8;
-		uint32_t* dst = new uint32_t[out_size]{
-			0, 1, 1, 2, 2, 3, 3, 0
-		};
+		out_size = size * 2;
+		uint32_t* dst = new uint32_t[out_size];
 
-		//int j = 0;
-		//for (int i = 0; i < size - 3; i += 3) {
-		//	dst[j] = src[i];
-		//	dst[j + 1] = src[i + 1];
-		//	dst[j + 2] = src[i + 1];
-		//	dst[j + 3] = src[i + 2];
-		//	j += 4;
-		//}
+		int j = 0;
+		for (int i = 0; i < size; i++) {
+			dst[j] = src[i];
+			dst[j + 1] = src[i + 1];
+			j += 2;
+		}
+
+		dst[out_size - 1] = src[0];
+
 
 		return dst;
 	}
