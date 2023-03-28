@@ -11,6 +11,8 @@
 
 #include "../../stb/stb/stb_image.h"
 
+#include <filesystem>
+
 #ifdef ARCHT_PLATFORM_WINDOWS
 #include <Windows.h>
 #endif
@@ -27,8 +29,9 @@ namespace archt {
 	int GLRenderAPI::totalMemory = 0;
 	int GLRenderAPI::maxTextures = 32;
 	int GLRenderAPI::maxMatrices = 256;
-	GLWindow* GLRenderAPI::window = nullptr;
 
+	GLWindow* GLRenderAPI::window = nullptr;
+	GLShader* GLRenderAPI::defaultShader = nullptr;
 
 	uint32_t GLRenderAPI::clearMask = 0;
 	uint32_t GLRenderAPI::polygonMode = GL_TRIANGLES;
@@ -95,6 +98,17 @@ namespace archt {
 		glfwSetWindowIcon(window->getHandle(), 1, image);
 
 		stbi_image_free(data);
+
+		/*
+		TCHAR NPath[MAX_PATH];
+		GetCurrentDirectory(MAX_PATH, NPath);
+
+		printf("Current Directory: %s\n", NPath);
+		*/
+
+		defaultShader = new GLShader("C:/GithubRepos/Architect_Engine/Architect/src/assets/shaders/fastshader");
+		Uniformbuffer* ub = new Uniformbuffer("matrices", nullptr, 1000 * sizeof(glm::mat4));
+		defaultShader->registerUniformBuffer(ub);
 
 		return window;
 	}
@@ -219,5 +233,11 @@ namespace archt {
 	int GLRenderAPI::getMaxMatricesCount() {
 		return maxMatrices;
 	}
+
+	GLShader* GLRenderAPI::getDefaultShader() {
+
+		return defaultShader;
+	}
+
 
 }

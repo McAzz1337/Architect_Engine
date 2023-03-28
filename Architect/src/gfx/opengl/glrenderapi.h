@@ -3,6 +3,9 @@
 
 #include "glrenderer2d.h"
 #include "glwindow.h"
+#include "glshader.h"
+
+
 
 namespace archt {
 
@@ -20,6 +23,7 @@ namespace archt {
 		static uint32_t polygonMode;
 
 		static GLWindow* window;
+		static GLShader* defaultShader;
 
 		static int maxTextures;
 		static int maxMatrices;
@@ -57,6 +61,7 @@ namespace archt {
 		static int queryTotalMemory();
 		static int getMaxTextureCount();
 		static int getMaxMatricesCount();
+		static GLShader* getDefaultShader();
 
 		static void createGuiInfoWindow();
 	};

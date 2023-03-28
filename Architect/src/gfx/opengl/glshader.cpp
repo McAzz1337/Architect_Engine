@@ -54,6 +54,8 @@ namespace archt {
 		readFile(path + GS_EXT, gsrc, true);
 		readFile(path + FS_EXT, fsrc, true);
 
+		
+
 
 		GLShaderConstants::modifySahderSource(vsrc);
 		if (gsrc.length() > 0)

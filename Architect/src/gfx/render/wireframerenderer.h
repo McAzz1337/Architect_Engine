@@ -24,13 +24,13 @@ namespace archt {
 		uint32_t currentIndex = 0;
 		uint32_t vertexOffset = 0;
 		uint32_t indexOffset = 0;
-		uint32_t currentMatrix = 0;
+		uint32_t currentTransform = 0;
 
 		Entity_s** entities = nullptr;
 		VBO* vbo = nullptr;
 		IBO* ibo = nullptr;
 		GLVertexarray* vao = nullptr;
-		Transform_s* matrices = nullptr;
+		Transform_s* transforms = nullptr;
 
 		Framebuffer* fb = nullptr;
 		Camera_s* cam = nullptr;
@@ -46,8 +46,12 @@ namespace archt {
 		static WireframeRenderer* getInstance();
 		static void terminate();
 
-		void beginScene(Camera_s* camera = nullptr, Framebuffer * frameBuffer = nullptr);
-		void endSCene();
+		void setRenderSettings() const;
+
+		void clear() const;
+
+		void beginScene(Scene* scene = nullptr, Camera_s* camera = nullptr);
+		void endScene();
 
 		void beginBatch();
 		void endBatch();
@@ -55,6 +59,10 @@ namespace archt {
 		void submit(Entity_s* entity);
 
 		void render();
+
+		void flush();
+
+		void setRenderTarget(Framebuffer& fb);
 
 	private:
 		void draw() const;

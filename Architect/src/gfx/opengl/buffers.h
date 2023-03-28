@@ -1,6 +1,7 @@
 #pragma once
 #include "../vertex.h"
 #include <typeindex>
+#include <vector>
 #include "glinclude.h"
 
 namespace archt {
@@ -62,6 +63,8 @@ namespace archt {
 		void print(int end) const;
 
 		void setIndeces(uint32_t* indeces, uint32_t size);
+
+		void asLineIndeces(std::vector<uint32_t>& indeces) const;
 
 		inline uint32_t* getData() const { return data; }
 		inline int getSize() const { return size; }

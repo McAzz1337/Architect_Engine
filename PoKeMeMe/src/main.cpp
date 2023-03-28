@@ -99,6 +99,10 @@ int main() {
 	SceneRenderer* renderer = SceneRenderer::getInstance();
 	renderer->setRenderSettings();
 
+	WireframeRenderer::init();
+	WireframeRenderer* wfRenderer = WireframeRenderer::getInstance();
+
+
 	
 	{
 		
@@ -322,6 +326,21 @@ int main() {
 
 		
 		if (renderTimer >= targetDelta) {
+
+			wfRenderer->setRenderSettings();
+			wfRenderer->setRenderTarget(fb);
+
+			wfRenderer->clear();
+			wfRenderer->beginScene(&scene, &cam);
+			
+			wfRenderer->submit(&entity);
+			wfRenderer->render();
+			
+			wfRenderer->endScene();
+			wfRenderer->flush();
+
+			
+			/*
 			renderer->setRendertarget(&fb);
 			
 			renderer->clear();
@@ -332,13 +351,16 @@ int main() {
 			renderer->render();
 			renderer->endScene();
 			renderer->flush();
-
+			*/
+			
 
 			camEnt.getComponent<Transform_s>() = cam.getView().inverse();
 
 			float angle = getAngle(cam.getPosition(), cam.getPosition() + glm::vec3(0.0f, 0.0f, 0.1f), cam1.getPosition());
 			camEnt.getComponent<Transform_s>().rotate(-angle, { 0.0f, 1.0f, 0.0f });
 
+
+			renderer->setRenderSettings();
 
 			renderer->setRendertarget(&fb1);
 			

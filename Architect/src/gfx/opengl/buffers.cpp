@@ -211,6 +211,16 @@ namespace archt {
 	}
 
 
+	void IBO::asLineIndeces(std::vector<uint32_t>& indeces) const {
+
+		for (int i = 1; i < size; i++) {
+
+			indeces.push_back(data[i - 1]);
+			indeces.push_back(data[i]);
+		}
+
+		indeces.push_back(data[0]);
+	}
 
 
 
