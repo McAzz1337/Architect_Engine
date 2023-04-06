@@ -56,6 +56,7 @@ namespace archt {
 
 		static void setViewport(const glm::vec4& v);
 
+		static void setDefaultShader(const std::string& path);
 
 		static int queryAvailableMemory();
 		static int queryTotalMemory();

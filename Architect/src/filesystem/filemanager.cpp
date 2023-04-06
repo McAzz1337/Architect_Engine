@@ -18,6 +18,8 @@ namespace archt {
 		
 	}
 
+
+
 	void Filemanager::deleteUnusedFiles() {
 		
 		for (auto& shader : shaderFiles) {

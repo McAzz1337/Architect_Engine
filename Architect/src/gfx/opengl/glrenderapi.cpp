@@ -5,11 +5,16 @@
 
 #include "glshaderconstants.h"
 
+
+#include "../../filesystem/filemanager.h"
+
 #include "../../vendor/imgui/imgui.h"
 
 #include "../gui/gui.h"
 
 #include "../../stb/stb/stb_image.h"
+
+
 
 #include <filesystem>
 
@@ -99,21 +104,13 @@ namespace archt {
 
 		stbi_image_free(data);
 
-		/*
-		TCHAR NPath[MAX_PATH];
-		GetCurrentDirectory(MAX_PATH, NPath);
-
-		printf("Current Directory: %s\n", NPath);
-		*/
-
-		defaultShader = new GLShader("C:/GithubRepos/Architect_Engine/Architect/src/assets/shaders/fastshader");
-		Uniformbuffer* ub = new Uniformbuffer("matrices", nullptr, 1000 * sizeof(glm::mat4));
-		defaultShader->registerUniformBuffer(ub);
-
 		return window;
 	}
 
 	void GLRenderAPI::terminate() {
+
+		Filemanager::getInstance().
+
 		CALL(glfwTerminate());
 	}
 
@@ -213,6 +210,13 @@ namespace archt {
 
 		Gui::getInstance()->addGuiWindow_void("Video card info", window);
 	}
+
+	void GLRenderAPI::setDefaultShader(const std::string& path) {
+		defaultShader =  (GLShader*) Filemanager::getInstance().loadFile<GLShader>(path);
+		Uniformbuffer* ub = new Uniformbuffer("matrices", nullptr, 1000 * sizeof(glm::mat4));
+		defaultShader->registerUniformBuffer(ub);
+	}
+
 
 	void GLRenderAPI::setViewport(const glm::vec4& v) {
 		glViewport(v.x, v.y, v.z, v.w);

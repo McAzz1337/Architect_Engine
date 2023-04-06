@@ -54,6 +54,9 @@ namespace archt {
 		readFile(path + GS_EXT, gsrc, true);
 		readFile(path + FS_EXT, fsrc, true);
 
+		printf("vsrc = %s\n", vsrc.c_str());
+		printf("fsrc = %s\n", fsrc.c_str());
+
 		
 
 

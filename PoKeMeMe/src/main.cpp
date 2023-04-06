@@ -327,6 +327,7 @@ int main() {
 		
 		if (renderTimer >= targetDelta) {
 
+			/*
 			wfRenderer->setRenderSettings();
 			wfRenderer->setRenderTarget(fb);
 
@@ -338,9 +339,8 @@ int main() {
 			
 			wfRenderer->endScene();
 			wfRenderer->flush();
-
+			*/
 			
-			/*
 			renderer->setRendertarget(&fb);
 			
 			renderer->clear();
@@ -351,7 +351,6 @@ int main() {
 			renderer->render();
 			renderer->endScene();
 			renderer->flush();
-			*/
 			
 
 			camEnt.getComponent<Transform_s>() = cam.getView().inverse();

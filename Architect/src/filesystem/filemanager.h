@@ -80,7 +80,15 @@ namespace archt {
 			return audioFiles[path];
 		}
 
+		template<typename T>
+		void deleteReference(const std::string& file) {
+			printf("Called unspecialised function\n");
+			__debugbreak();
+		}
 
+		void deleteReference<GLShader>(const std::string& file) {
+			
+		}
 
 		
 
